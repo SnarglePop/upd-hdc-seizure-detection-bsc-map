@@ -19,15 +19,16 @@ def post_processing_window(arr, tolerance: int):
                 arr[i] = arr[i-tolerance]
     return arr
 
-def new_post_processing_window(arr, tolerance: int):
+def new_post_processing_window(arr, tolerance: int, filepath):
     # assuming 0.5 seconds per prediction
     new_preds = np.array([])
     wind = tolerance * 2 + 1
     if len(arr) < wind:
+        print(f"too short - {filepath} at {len(arr)}")
         return new_preds
     else:
-        for i in range(0,len(arr)-wind):
-            window = arr[i:i+11]
+        for i in range(0,len(arr)-wind+1):
+            window = arr[i:i+wind]
             num_zeros = (window == -1).sum()
             num_ones = (window == 1).sum()
             if(num_zeros > num_ones):
@@ -45,5 +46,5 @@ if __name__ == "__main__":
             folderout = f"post/{sub}/"
             filepath = folderin + file
             file_arr = np.loadtxt(filepath)
-            newfile_arr = new_post_processing_window(file_arr, tolerance)
+            newfile_arr = new_post_processing_window(file_arr, tolerance, filepath)
             np.savetxt(folderout+file,newfile_arr)

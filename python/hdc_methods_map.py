@@ -12,14 +12,14 @@ def generate_randomHV(n: int, p: float):
     ### Parameters:
         n : int
             dimension of hypervector
-        p : float [0, 1]
+        p : float [-1, 1]
             density of hypervector
 
     Returns a random binary hypervector as a numpy array of integers.
     """
-
+    
     m = int(n * p)  # number of 1s
-    random_HV = np.array([1] * m + [0] * (n - m), dtype=int)
+    random_HV = np.array([1] * m + [-1] * (n - m), dtype=int)
     np.random.shuffle(random_HV)
 
     return random_HV
@@ -27,17 +27,16 @@ def generate_randomHV(n: int, p: float):
 
 def bind(hv1: np.ndarray, hv2: np.ndarray):
     """
-    Binds two hypervectors together using XOR and returns the resulting hypervector.
+    Binds two hypervectors together using multiplication.
 
     ### Parameters:
         hv1, hv2 : hypervector (numpy array of integers)
             hypervectors to be bound
     """
-    return hv1 ^ hv2
+    return np.multiply(hv1, hv2)
 
 
 def bundle(hv_arr: np.ndarray):
-    random.seed("test")
     """
     Bundles an array of hypervectors and returns the resulting hypervector.
     Results are binarized according to half the length of the array and ties are randomly broken. 
@@ -48,14 +47,16 @@ def bundle(hv_arr: np.ndarray):
     """
     l = len(hv_arr)
     sum_hv = np.sum(hv_arr, axis=0)
-
+    # """
     with np.nditer(sum_hv, op_flags=['readwrite']) as it:
         for x in it:
-            if x > l/2:
+            if x > 0:
                 x[...] = 1
+            elif x == 0:
+                x[...] = random.choice([-1,1])
             else:
-                x[...] = 0
-
+                x[...] = -1
+    # """
     return sum_hv
 
 def bundle_cont(hv_in: np.ndarray, label_counters):
@@ -71,7 +72,7 @@ def bundle_cont(hv_in: np.ndarray, label_counters):
     """
 
     for i in range(len(label_counters)):
-        if hv_in[i] == 1:
+        if hv_in[i] > 0:
             label_counters[i] += 1
         else:
             label_counters[i] -= 1
@@ -86,13 +87,12 @@ def binarize_cont(label_counters):
         label_counters : array of running counters
             array of running counters for each dimension bit of hypervector
     """
-    random.seed("test")
     with np.nditer(label_counters, op_flags=['readwrite']) as it:
         for x in it:
             if x > 0:
                 x[...] = 1
             else:
-                x[...] = 0
+                x[...] = -1
 
     return label_counters
 
@@ -105,10 +105,10 @@ def compute_similarity(hv1: np.ndarray, hv2: np.ndarray):
             hypervectors to be computed for similarity
     """
     # return np.sum(hv1 ^ hv2) / len(hv1)
-    return np.sum(hv1 ^ hv2)
+    return np.dot(hv1, hv2)
 
 
-def generate_randommemory(n: int, p: float, d: int):
+def generate_randommemory(n: int, p: float, d: int, seedword: str):
     """
     Randomly generates the item memory for 'd' items with 'n'-dimension & 'p'-density hypervectors.
 
@@ -120,7 +120,7 @@ def generate_randommemory(n: int, p: float, d: int):
         d : int
             No. of items in memory
     """
-    
+    random.seed(seedword)
     memory = np.zeros((d, n), dtype=int)
     for i in range(d):
         memory[i] = generate_randomHV(n, p)
@@ -234,15 +234,16 @@ def compute_optimizedLBP(window, d):
     """
 
     cont_val_LBP = ""
-    random.seed("test")
 
     for i in range(1, len(window)):
         if window[i-1] > window[i]:
             cont_val_LBP += "0"
-        elif window[i-1] <= window[i]:
+        elif window[i-1] < window[i]:
             cont_val_LBP += "1"
+        else:
+            cont_val_LBP += str(random.randint(0,1)) # randomize for ties
 
-    return np.array([int(cont_val_LBP[i-(d):i], base=2) for i in range(d, len(window))], dtype=int)
+    return np.array([int(cont_val_LBP[i-(d-1):i+1], base=2) for i in range(d, len(window))], dtype=int)
 
 
 def compute_lineLength(window):

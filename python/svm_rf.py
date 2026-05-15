@@ -64,7 +64,7 @@ if __name__ == "__main__":
     d = 6 # LBP bit size
     num_chs = 17 # constant
     levels = 64
-    training_patients = ["chb"+str(x).zfill(2) for x in range(1, 1+1)]
+    training_patients = ["chb"+str(x).zfill(2) for x in range(15, 15+1)]
     testing_patients = ["chb"+str(x).zfill(2) for x in range(2, 1+1)]
     training_features = [1,2,3,4]
     feature_array = np.array([])

@@ -1,0 +1,201 @@
+`timescale 1ns / 1ps
+module item_mem_1 ( // LBP
+    c,
+    l,
+    ch_hv,
+    lbp_hv
+    
+);
+    // General params
+    localparam DIMENSIONS = 500;
+
+    // Channel params
+    localparam NUM_CHS = 17;
+	localparam CH_0 = 500'h5a57a37989815fcd5dfe64805b8506f94ca5704e62e6c1d3fbd77bf1be3e5381ff8c4828d9944dcb84a619e20a208bb5af38a24c3f762c834137c15d8750d;
+	localparam CH_1 = 500'h9eb37666d62a51555bc94d7b6e0a9fe218fb0011cc59cac136fd67500268e58a7f840e2d83fbd38bb65fe22e400eca368e67cd024d0f115fc986c5ffe7028;
+	localparam CH_2 = 500'h85c18f684e792a9a249a4e0aa3eed836a0f2afc269451592f70244aa2b3303f6b2656cbb2bbf46d5b57dea074610b78dab46e4f455adc8e3fa96d4907f20b;
+	localparam CH_3 = 500'h90d123d99004b01abd5bf1ffd62b99897aa45f8ca47929a194a90f464ce501f78675e2b1d3b88140cc24eacc274e29bb2c3fb7d9c8c2fd747527b1fcb619a;
+	localparam CH_4 = 500'h52e7aad3b5b138581bb6ad8ed7c66704b029da5e79a9e5222d2229dfba8866955948fd9d058261517c09cd86a4261f79dcfdb18950b8eddb4300e986bafe2;
+	localparam CH_5 = 500'ha50767ed49b677c3b112d44526b529adf4be7721e9362610755c88cdb4185b7fa17020a535d24dcdb48e1e225df696f9a35c0c3ab33279a6d12b36166362b;
+	localparam CH_6 = 500'h7249cd309a28612e6406b8fcf25e76591d33d55edad5ca184d08aa57e622a6913658dbd40b0baf9b2c11a1122aeac697d28a6d938e85f5d33e33d2bffab1a;
+	localparam CH_7 = 500'h2da4287dee461c55c49011c780d5e23c03cb88adaa3acb28992e620dc35a841d9d7a8696c1a9af69a675276bcee453475eac74f6c37be7f82dc34d8f6c6b4;
+	localparam CH_8 = 500'h2f86a8b8fc0db6450b349b6dd72bde8cbdc08486656a62058fb66f12151be9050cc3df6137e5849af1867f7827a92f497d9f0b09e564f0e83e8acfc1600be;
+	localparam CH_9 = 500'h58d06c8835a0cb2c6c444b23d4fe2a572648366c03d0f6166eca4dca7ff6abe9974c85d09c8e5fdf2456b5c1945377fb314fe29b7e7411d4898721c72adb;
+	localparam CH_10 = 500'hbd93522cf49e866b3817f8f6bb4e5aa64bae0def5166437691920b21368e8f647549440857c71b7db41709326361d31aa0e3f66014996dffba386c272ced1;
+	localparam CH_11 = 500'heb717271cf2b46cab91271a284cc43ab800ffb5cb7628d33d80c61b848467764ce84b66017bbbfd0fc9cb08eb29e38431f639f851d99d37a70828a7a27a7e;
+	localparam CH_12 = 500'h16bec3febd5e4ac1b1dda3ac2eaf54039a9c5074a8e151d22d35a976f8e1eab3f82b1559c08e976fc0d88878e1bc984f3f299283e8d77571a586014846ad9;
+	localparam CH_13 = 500'hce2326dcd4c13ba1f8932539297c39fde5dbc8c409efb38bd72a73460da71a07afa9fbcc5784fd21840e496b096b7aecd028f170170006b79da7662627a16;
+	localparam CH_14 = 500'h79d1a00eb7748f3398da1a8ec0ed8777c1e72d19f6ab3f46047fc8b6ec7060c4e1896d827a5b6aecaaaa4a7d2a00cb14c83aaf97177e1048da33e3b40ded8;
+	localparam CH_15 = 500'hd62812b60888c7c6f0b23de1cce51dde412698db3a10da985dd3f72025e394df53189b2795f4137a6e1e74d30182b06ea9171870b7265ed762ec54fd7b9f1;
+	localparam CH_16 = 500'h6f05385c1b700460f71ce1ea8ba35a336ef7b42ef10a19d302b761df41d91acf197f2f42a81ee599925d04dd98b5557517a78006362239297c3f1b5ec4e3f;
+
+
+    // LBP params
+    localparam NUM_LBP = 64; // 6-bit patterns, 2**6 = 64
+	localparam LBP_0 = 500'h25ba4115a1d6ac217988e0160692dab3f547c0d79b3cb3d74cc23ca0d5e4e3c7155cbac625c06596ed3cee452f6517b6272b63d7ae82911e38a85beb65d1e;
+	localparam LBP_1 = 500'h865965697354c7bc2b76e2e6a51997023a6bb81c48fd856de9b5d665a1ca60957dc61b5389e96642c49520564c9da70353538b88e8467e1e39ce7fa4d616f;
+	localparam LBP_2 = 500'h3c1da6357b8d356286df2bd5d78cb292cf338ec61aaeb08c48b9a3d45c6b0eac83ccc4eb772d8533f9df34418bc4a8dc4bc35d54da8b3081994e242cd1fa2;
+	localparam LBP_3 = 500'hc7aa5f49a34ee1687883487e861c04f5420bde6480ac796eff1a6a2f80d45f90fc4ebccbe34f088819f50a052d617ab61353f7568cc10ce2797566ef7af47;
+	localparam LBP_4 = 500'h613bae5db795689dd1b6df11fb56bb785b34400a0d5b37cb8589fd9140f2b9bedb1a880c440d67ab052b8814d5f707a8fdd8cb8770dbdf2a43c786040ac11;
+	localparam LBP_5 = 500'h8345e96275824d636a06e58a0216a9f1f66c7013f19254598e8d0a2672b736429a17a779bf5fbf43e37e5f49e6eaf15204de5900e3bc45c4e9db48f4313d9;
+	localparam LBP_6 = 500'hc273a4679f345005a5d5133136c7bbef712da24b16f25d0a84b99fa3e3b436357e2e60f0607f61c48211bc120b0b5c32ea9ad17bb25fd74c074bf1d25daf0;
+	localparam LBP_7 = 500'h4fb50030a8fcdd1b01dd3c12c3c1161efa9a23806a3e8e6f428f65829d6376e4c98b09b48d1e957beca58c9f9ae24f82d6cac942f74d794930dbd8eecdb86;
+	localparam LBP_8 = 500'hc8d0227639b27f1889fdec58dc2a2009a75a552ca35d4aad19ac846e0344deb71770afaf7ad3bc2a212c7dd3913e9eccd7de42092833593e4e6075bb61e69;
+	localparam LBP_9 = 500'h81f464566b427850c3a1ba8d648e13f22f2adfde2ec7c34990f49a73995af67f289dc71bde2f6287c8e9ca77cc33edde062488700e21b84016125f16d3d79;
+	localparam LBP_10 = 500'ha78852746c2840df7dde4ee8a7d35d88fcc8c1cc80e78058b588c5cf499bfa85e0df7a4007487d5c79506f4eb3dfa95a856001ea73f8253e48c0ed677bf06;
+	localparam LBP_11 = 500'h2cb3d192b5f4e9f80d3aaa5c6db9f4cdb89dd3ce36437fb51329b6e842312832329ac38863e2390b13577a78c13f98f81ba0c064351775ac4cad60f6fe4b;
+	localparam LBP_12 = 500'he29996f0a8a66686b97ba724ab0b1f3affd08faa1ef8d2c56d7e4099ac527d505c8f9123417160e9223960eee22680e78ca4397fbda534daa5cbe3433a529;
+	localparam LBP_13 = 500'hd128b7218fecedf28b7a5088bac63990292a833a70c16f4f53ae20eaa387b4ee0d60f69f9da88c43a635f00ce42c9a45dd6f8a7ac74b1ea02c67149ad3eff;
+	localparam LBP_14 = 500'hfde31828700701c6e6c4ac1b07c2ff9b6c8a210b0f370540d199ef34cdc652ef3d975bf7f2caf9230caa720c2701cc6c15fee751d751342d621d0fbdde78;
+	localparam LBP_15 = 500'hc790baf1156f7da81f2499f30f06646d7cd99e0e95971222ef8db457c6012ed2d02008fecfcef85187722dff6dd235a3b428f2c5b1d52da63a72621820f41;
+	localparam LBP_16 = 500'hd60dd59a2698511cb0f92c2e0eb99542d4098600d0dafadf38a89182c2fc63cba5fb39362bf2614f090023fb725693fbe30b592fdbd39e4dafcccd44b1937;
+	localparam LBP_17 = 500'h9e08b158df507f366e3d75a28d52b4d3485720061f72231d87b321dcea5ba931273c067d4c6dff58de1f453045298951a0c0dc8e6eab12d77e3183df96dd2;
+	localparam LBP_18 = 500'hf5420b25307a2892f6c40048615137de7c467194ca8fc5fb4c879243a54d53e98d75b956fbb3de8893d6c7794ca6d5636a74abed91778b900972614538efc;
+	localparam LBP_19 = 500'h5a0498e2d8dde378fdaca86c87d0f89f1775907909d21e02834e7e8b95e7cabe5c8297b97110ad1074a845b74d70c9759a352027c32f9c4b99cad96caff0d;
+	localparam LBP_20 = 500'he2e315db231114d25f79c97e8847b45d82b53619ae20728b660866b6779760a59234ddf6ec146d6239aace273344109f38ff5982ad8dabf4fed2246c4e7c4;
+	localparam LBP_21 = 500'he666fe0b635836de20edaeb481fc2da71b159dcb6c9ac30ddd18d037d7faa881b17328d5bb731570d59dc35d0036ee3b042c90cc237fc2d24a04f242a2f74;
+	localparam LBP_22 = 500'h58e7e63c5991e887cdb1148783010786740bd32de30779271be702b3ce86807a63642e441be2dfb7473f15cba1be386221e5473a65aa7be9cb2ee406f8cf3;
+	localparam LBP_23 = 500'h34a215df38822c6adc48e2865f1b9c15f1c071dff21f60376e76990ae4ff05072ffa5be8350f625a3763bde07c005c05ed30be925cadecc221db66639c1f0;
+	localparam LBP_24 = 500'h3963226528edfbb4c4b61ff481103de811259dcced72f4b00f5de7896a981fefc9bba87a48ea7eb6304f25f22d8e755e9e43c12871b7c8c10af4271a82c09;
+	localparam LBP_25 = 500'hcf0ae342543eae921d68bf50b37548eb47d9d508a3cf5b5a9d271ca16fc450801d4651e0ca3fd1dbf2c6b56c1f5ba4d144215d9ff8c8e050f7b5dbb1c00ca;
+	localparam LBP_26 = 500'h3925d2e4953c49eacd69fa1979e96aa03dcd5f155f49c58440f82d18818c56d0637ecb7ad6badd5999396b690c498eea422186580127bf3c6e2dfa368ded4;
+	localparam LBP_27 = 500'h13b389b7a492163d35d389e40dc688d41310cc9675abd97347c643684249cac49ed6c16252819865f31fa9f09bef469f53d0ec5fe20f8dbc94b5b49ddfd3;
+	localparam LBP_28 = 500'h25e1bccf579add5a40fb579c031cf961791ef13438089859c801abecaddd7b6ea157ec37824b0976756bb30f60e5b1d413087a8ab79815593a65f02be5294;
+	localparam LBP_29 = 500'ha1c55d7c6b4b9fa5b158c2dcf0f1ea506e3a70652daaadbe55a6f21c4c5121504cbc0843b8e852592a1e9353af6fc4efed5f8072e24be0cd20159d99fa732;
+	localparam LBP_30 = 500'h970a73dba20be9d56bc523942d3c9e0bac8f8e77c8a37bdd2642280bea79a3655d2b5cb51f02a0c22f62a939c91fb781875d72bc26280ba57592166931abf;
+	localparam LBP_31 = 500'h5866ac7011daf9e572864a94d13aa72ed1d2ad5ea3c70e6cbd00b4be29135677d477a21c22c386d2fcc21e4c1408f71274e49f166f9520a2ddb7d3649ef37;
+	localparam LBP_32 = 500'h7820cb4e00f21f4c02a08656b71a0effeada0d6163a0f2dbb69538db2d8b65c42f3c62e75d143bc70c3396afe9d9c0e8baa10df2d28f4b733b757c06d1217;
+	localparam LBP_33 = 500'haa971f15f548d45c4f199e09630d09defee8c7913443c3b5ddc879168e93c2a73e616c98d8eb051d6d9a24b688b36f559b23da0a8aaee415206f36e6d6326;
+	localparam LBP_34 = 500'h8f54616f1cc6566cb0070f22debacdf98c09291a50ee72f74d100bc5e34ffa63246e5e3588711178bfb266f7d145565ca1e0b1b76af60b70673d03668be81;
+	localparam LBP_35 = 500'hf216199df8b480b15c16af3dfa106450d1680ab5896691f7b8d006238f95f3932c54f46c40532ba42dc71e4c81779db0794bf3ee0ee16542ffbc8af0fef71;
+	localparam LBP_36 = 500'h34493987733dc6c7cb8aedd5b632b0c2e78469915071279c3e357bea0f9021ba2851eee23ec4b1635e754abb83e7716a24d03fd6114df532f5040e5bd1147;
+	localparam LBP_37 = 500'ha6dccbc7af882556aacefa8d5c74536dcc5c1b217d4a9c17bf9d3793548f945cdf7714f0e42d7ce43e3142008f42d4c0a4b629ba48f827c2b54c064ba1f64;
+	localparam LBP_38 = 500'h760fb279b12764a3d6859392ae96c23ab4146294c2fc234ab2f9d5960fd70a24ee57f5b32bd7e8083b683cc053128a32edb82a23c49cbb8f383ea0b7964ff;
+	localparam LBP_39 = 500'hab2055207f15b8f9cb8b61ed221531b5d0a0deb7db4b5c575dbfb29353e7742206ef01e8c2bf9a0d5fc84b9577b032110a47f0c1d40010e654d2a6f7577f2;
+	localparam LBP_40 = 500'hfa6c2b44118a1fec30740527e7b52206a6b6976302b4da359154acdbee4ec7356e4f0fb86c7f9bba3bd87fb94517d8c30121dc69440127bd0b0f2ab2f20d7;
+	localparam LBP_41 = 500'hc39edf7090adc5523d9159984e254ae98880a207f33c34b9ce12cdb31a760a92f655825de83d8b63d39900b4ebeee06a57d7e4c3451e345eae7baf860e6d5;
+	localparam LBP_42 = 500'hffb4fd8cb68f4ca175b2521d3f9a880b641b191bc9ae302623481a4e7e800778a17f7c449ce2fa4be61dd57ed2c15f8930f3e39d03cd231231e6a1a64bd8d;
+	localparam LBP_43 = 500'hde8b3be9b1244db166ee523a94b2bdf3c7577638940740e3583fc731f2827e64ee329af8ce791653d09aec760566b607acb6e41bb600cbb6699046142ca31;
+	localparam LBP_44 = 500'h949142ce3e1f19a7d94080e5c55885f6289ae06e7c3a81b0093abd9ec9579991805126a93a9a77577dd00e3f77870337facc4ac50bd212ceffd9e6f65594d;
+	localparam LBP_45 = 500'h8d64e0e0db40c2cda7b6ce00a31ebd9c8f2f06f6204b1d4739e7d9515f35f4d173ea3a0058068f47285d1c617fb75879c30a729d0307824357677af363fda;
+	localparam LBP_46 = 500'hb60afe10865cbfe902f3b1d75c2893d0dc87278857f0c8a185f7517788e313bfb4d757d2c23e35dd677594a58688146de4665fea670216b3003a8558b9db;
+	localparam LBP_47 = 500'hb9ea709bd9a5c20aea15311d6b32255568fad8bd50731372c24a1c2e7732d0a5f66ed3bec37df548049b56ab78c59811d8f2d8ae2c075395bf92235f2405d;
+	localparam LBP_48 = 500'h3c902f7d5b8925b2e25fa0131fa382da1976b857baaa0ef91ccab44760beaf73efd727099019d7063b127a634e721d11d2738ca9fb529188bd08223a5957b;
+	localparam LBP_49 = 500'h625adca4aadc1e6d6cf72cc78705b066d7b9a4bae750c0ae6551716e2203bc6d5f10e98ccd365f981141cc8d1da295fcae14fe32ce8ac04de41bcd99fb324;
+	localparam LBP_50 = 500'h31beb38f9a18aa2bfc6b52e9454f7ec29072a69b8d8b10b961563e1cdf30538c195d5661c1a0378632453d8f75f027bfcf9a7e420e1ba14ca14a2957f33b4;
+	localparam LBP_51 = 500'h9beb98d915b1098ec02a152e52344203e4945652a7f72deeee1328a2e9add31dd23b9a9f7372d2c07144e2fa8dcd3fede4e374c8e175fd47548505394641d;
+	localparam LBP_52 = 500'hbec0b9c954210cc3285990a8fd6901b26b830c8ee52eccf96dc8f7cb267494a5c696243f7ae33493a2bca61cc1f8f587866f2f9a7e8e2f7ba1fd0d0901d99;
+	localparam LBP_53 = 500'h4bcc04a53dc0eca7ce4f4df653cab3cb2149708e928ea3f9040ec8168a07bb5a5f7bac5f0367235a1cf0d0f6d6ef0a9d49b0c8ebb1d9016711bfbf971134;
+	localparam LBP_54 = 500'hcfbb684bfbb38ae5887a89072d5bf0056276e6f8abba5e61e7b1344b42d1aa1f94ccd763357e6c16bc87205d64615d39d4fdb80c972ba4070839567030b05;
+	localparam LBP_55 = 500'ha8275fca76d611d7dd85afd68b29b86f8fd7946fc46551620973f9b6ecd41f1503a033e3e69181174480cfb115c93b03b294db838ad481df170a2d44f1f13;
+	localparam LBP_56 = 500'h3b870b76484bbe821613045e82db954998d628fde2b5f3eae433c949a934ab0a0ed1c0cf2f8dddc69dae1d3497daf853378da671439b8bcc0ae9f5a528158;
+	localparam LBP_57 = 500'h8637d96f6943afddbca3deb1110ec9e0e85de8bd71678a106a004c0e0404f761575177ea06bc6b3bdaeec0328c9d5bba58bd8669b475bb52606715fd501a2;
+	localparam LBP_58 = 500'h4051c5daf96983875b558de4c683601e27d33f7ee1a3e4e7bc70d14ce89ff12f68886804fe39a22bedf3c8f9e381ca8881c1b97da64e37aae351261566505;
+	localparam LBP_59 = 500'hf5718736e364cc9fc7f61203dc3f463f244b4432e0ad87875604155e2faeb9d05fd4ae48a5bf221386f214356050d56f778d54b699fa9847519332139f178;
+	localparam LBP_60 = 500'hffb18b5cd165afa02db11b5a69f93f8d35901eb7273ae6a29e0f21972d180622ba20a597dbdf4ca9568a68c66c89ab0e9e6e4adbf139f00709062d822e6ad;
+	localparam LBP_61 = 500'hda235557b82d1fb454cf6ca63ba2ab8489000bf03bbcde5f725e1163f402672997c118378cc683dcfb162e0e755aad47d291b7566caa3d03b8d691acab9d0;
+	localparam LBP_62 = 500'h71b00fd23d758ddda5b428030b9aa1f1992bf3941f33d7b32bc286c1c4c3b9f4a8a80a5f01ef51f4b2ae530d08ef33639f73e46a3833b53664b829d44e716;
+	localparam LBP_63 = 500'h8d650b54cc1a1254333d45670913134a81a3bb34bdf69b59ad504d8fa17b8d63d28fde0f4e8fe7e26e923c918482531afd038cc266ee3f80a7b3b7e03cfb1;
+
+
+
+    input [$clog2(NUM_CHS) - 1: 0] c;
+    input [$clog2(NUM_LBP) - 1: 0] l;
+    output logic [DIMENSIONS - 1:0] ch_hv;
+    output logic [DIMENSIONS - 1:0] lbp_hv;
+
+
+    wire [NUM_CHS - 1: 0][DIMENSIONS - 1:0] ch_mem;
+    wire [NUM_LBP - 1: 0][DIMENSIONS - 1:0] lbp_mem;
+
+
+    assign ch_mem[0] = CH_0;
+    assign ch_mem[1] = CH_1;
+    assign ch_mem[2] = CH_2;
+    assign ch_mem[3] = CH_3;
+    assign ch_mem[4] = CH_4;
+    assign ch_mem[5] = CH_5;
+    assign ch_mem[6] = CH_6;
+    assign ch_mem[7] = CH_7;
+    assign ch_mem[8] = CH_8;
+    assign ch_mem[9] = CH_9;
+    assign ch_mem[10] = CH_10;
+    assign ch_mem[11] = CH_11;
+    assign ch_mem[12] = CH_12;
+    assign ch_mem[13] = CH_13;
+    assign ch_mem[14] = CH_14;
+    assign ch_mem[15] = CH_15;
+    assign ch_mem[16] = CH_16;
+
+
+    assign lbp_mem[0] = LBP_0;
+    assign lbp_mem[1] = LBP_1;
+    assign lbp_mem[2] = LBP_2;
+    assign lbp_mem[3] = LBP_3;
+    assign lbp_mem[4] = LBP_4;
+    assign lbp_mem[5] = LBP_5;
+    assign lbp_mem[6] = LBP_6;
+    assign lbp_mem[7] = LBP_7;
+    assign lbp_mem[8] = LBP_8;
+    assign lbp_mem[9] = LBP_9;
+    assign lbp_mem[10] = LBP_10;
+    assign lbp_mem[11] = LBP_11;
+    assign lbp_mem[12] = LBP_12;
+    assign lbp_mem[13] = LBP_13;
+    assign lbp_mem[14] = LBP_14;
+    assign lbp_mem[15] = LBP_15;
+    assign lbp_mem[16] = LBP_16;
+    assign lbp_mem[17] = LBP_17;
+    assign lbp_mem[18] = LBP_18;
+    assign lbp_mem[19] = LBP_19;
+    assign lbp_mem[20] = LBP_20;
+    assign lbp_mem[21] = LBP_21;
+    assign lbp_mem[22] = LBP_22;
+    assign lbp_mem[23] = LBP_23;
+    assign lbp_mem[24] = LBP_24;
+    assign lbp_mem[25] = LBP_25;
+    assign lbp_mem[26] = LBP_26;
+    assign lbp_mem[27] = LBP_27;
+    assign lbp_mem[28] = LBP_28;
+    assign lbp_mem[29] = LBP_29;
+    assign lbp_mem[30] = LBP_30;
+    assign lbp_mem[31] = LBP_31;
+    assign lbp_mem[32] = LBP_32;
+    assign lbp_mem[33] = LBP_33;
+    assign lbp_mem[34] = LBP_34;
+    assign lbp_mem[35] = LBP_35;
+    assign lbp_mem[36] = LBP_36;
+    assign lbp_mem[37] = LBP_37;
+    assign lbp_mem[38] = LBP_38;
+    assign lbp_mem[39] = LBP_39;
+    assign lbp_mem[40] = LBP_40;
+    assign lbp_mem[41] = LBP_41;
+    assign lbp_mem[42] = LBP_42;
+    assign lbp_mem[43] = LBP_43;
+    assign lbp_mem[44] = LBP_44;
+    assign lbp_mem[45] = LBP_45;
+    assign lbp_mem[46] = LBP_46;
+    assign lbp_mem[47] = LBP_47;
+    assign lbp_mem[48] = LBP_48;
+    assign lbp_mem[49] = LBP_49;
+    assign lbp_mem[50] = LBP_50;
+    assign lbp_mem[51] = LBP_51;
+    assign lbp_mem[52] = LBP_52;
+    assign lbp_mem[53] = LBP_53;
+    assign lbp_mem[54] = LBP_54;
+    assign lbp_mem[55] = LBP_55;
+    assign lbp_mem[56] = LBP_56;
+    assign lbp_mem[57] = LBP_57;
+    assign lbp_mem[58] = LBP_58;
+    assign lbp_mem[59] = LBP_59;
+    assign lbp_mem[60] = LBP_60;
+    assign lbp_mem[61] = LBP_61;
+    assign lbp_mem[62] = LBP_62;
+    assign lbp_mem[63] = LBP_63;
+
+    always_comb begin
+        ch_hv = ch_mem[c];
+        lbp_hv = lbp_mem[l];
+    end
+
+endmodule
